@@ -9,6 +9,7 @@ import Logout from "./components/Logout";
 import { useNavigate } from "react-router-dom";
 import Cart from "./components/Cart";
 import { fetchProducts } from "./api";
+import Confirmation from "./components/Confirmation";
 
 const App = () => {
 
@@ -63,7 +64,8 @@ const App = () => {
         <Route path = "/products/:productId" element = {<SingleProduct />} /> 
         <Route path = "/login" element = {<Login setToken = {setToken}/>} />
         <Route path = "/logout" element = {<Logout setToken = {setToken} />} />
-        <Route path='/cart' element={<Cart cart={cart} setCart={setCart} />} />
+        <Route path = "/cart" element = {<Cart cart={cart} setCart={setCart} />} />
+        <Route path = "/confirmation" element = {<Confirmation/>} />
       </Routes>
     </div>
   );
