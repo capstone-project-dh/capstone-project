@@ -103,8 +103,8 @@ export default function Cart({ cart , setCart}) {
 
                 </div>
                 <div>
-                <div className="col-sm-4 col-lg-3">
-              <div className="p-5 text-left ">
+                <div>
+              <div>
                 
               </div>
             </div>
