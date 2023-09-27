@@ -1,68 +1,58 @@
-import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
+import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
-import { Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
+export default function Cart({ cart, setCart }) {
+  const [products, setProducts] = useState(cart);
+  const [totalOrder, setTotalOrder] = useState(0);
+  const [show, setShow] = useState(false);
+  const [answer, setAnswer] = useState(false);
 
-export default function Cart({ cart , setCart}) {
+  const handleShow = () => setShow(true);
 
-    const [products, setProducts] = useState([]);
-    const [totalOrder, setTotalOrder] = useState(0);
-    const [summary, setSummary] = useState([]);
-    const [show, setShow] = useState(false);
-    const [answer, setAnswer] = useState(false);
-    
+  useEffect(() => {
+    setProducts(cart);
+    setTotalOrder(calculateTotal(cart));
+  }, [cart]);
 
-    const handleShow = () => setShow(true);
-    const handleAnswer = () => setShow(true);
+  function calculateTotal(cart) {
+    let totalPrice = 0;
+    cart.forEach((product) => {
+      totalPrice += product.price * product.quantity;
+    });
+    return totalPrice;
+  }
 
-    const deleteFromCart = (product) => {
-        const newCart = cart.filter((item) => item.id !== product.id)
-        setCart(newCart)
-    }
+  function deleteFromCart(product) {
+    const newCart = cart.filter((item) => item.id !== product.id);
+    setCart(newCart);
+  }
 
-    
-
-    function changeQuantity(p, quantity) {
-
-        let cartProduct = [];
-    
-    
-        products.map((product) => {
-          if (product.id === p.id) {
-            product.quantity = quantity;
-          }
-          cartProduct.push(product);
-        });
-    
-        setTotalOrder(calculateTotal());
-    
-        setProducts(cartProduct);
-    
-        cartProduct = cartProduct.map((cart)=>{
-          return {
-            productId: cart.productId,
-            quantity: cart.quantity
-          };
-        });
-    
-    
-    
-       localStorage.setItem("cart", JSON.stringify(cartProduct));
-       
+  function changeQuantity(product, quantity) {
+    const updatedProducts = products.map((p) => {
+      if (p.id === product.id) {
+        return { ...p, quantity };
       }
+      return p;
+    });
 
-    function calculateTotal(){
+    setProducts(updatedProducts);
+    setCart(updatedProducts);
+    setTotalOrder(calculateTotal(updatedProducts));
 
-        let totalPrice = 0;
-        products.map((product) => {
-          totalPrice += product.price * product.quantity;
-        });
     
-        return totalPrice;
-    }
-    
+    const cartProduct = updatedProducts.map((cart) => {
+      return {
+        productId: cart.productId,
+        quantity: cart.quantity,
+      };
+    });
+
+    localStorage.setItem("cart", JSON.stringify(cartProduct));
+  }
+
   return (
     <div>
       <h2>Cart</h2>
@@ -71,62 +61,52 @@ export default function Cart({ cart , setCart}) {
           <div key={index}>
             <h3>{product.title}</h3>
             <p>${product.price}</p>
-            <img src={product.image} alt={product.title} style={{width: "120px", height: "120px"}} />
+            <img
+              src={product.image}
+              alt={product.title}
+              style={{ width: "120px", height: "120px" }}
+            />
             <button onClick={() => deleteFromCart(product)}>Remove</button>
             <div>
-                
-                <Button onClick={() => {
-                    if( product.quantity - 1 === 0){
-                        handleShow();
-                    }
-                    if(answer){
-                        changeQuantity(product, product.quantity - 1);
-                    }
-                    setAnswer(false);
-                                
-                    }}
-                    variant="outline-danger"
-                >
-                    -
-                </Button>
-                <Button variant="light" disabled="true">
-                    {product.quantity}
-                </Button>
-                <Button onClick={() => {
-                    product.quantity + 1;
-                    changeQuantity(product, product.quantity + 1);
-                    }}
-                    variant="outline-success"
-                >
-                  +
-                </Button>
-
-                </div>
-                <div>
-                <div>
-              <div>
-                
-              </div>
+              <Button
+                onClick={() => {
+                  if (product.quantity - 1 === 0) {
+                    handleShow();
+                  } else {
+                    changeQuantity(product, product.quantity - 1);
+                  }
+                  setAnswer(false);
+                }}
+                variant="outline-danger"
+              >
+                -
+              </Button>
+              <Button variant="light" disabled={true}>
+                {product.quantity}
+              </Button>
+              <Button
+                onClick={() => {
+                  changeQuantity(product, product.quantity + 1);
+                }}
+                variant="outline-success"
+              >
+                +
+              </Button>
             </div>
           </div>
-        </div>
-                
-            
         ))}
         <ListGroup variant="flush">
-                  <ListGroup.Item active>Order Summary </ListGroup.Item>
-
-                  <ListGroup.Item>
-                    Order Total $
-                    <b>
-                      {new Intl.NumberFormat().format(
-                        totalOrder + totalOrder
-                      )}
-                    </b>
-                  </ListGroup.Item>
-                </ListGroup>
-        <Button><Link to="/confirmation">Pay</Link></Button>
-
+          <ListGroup.Item active>Order Summary </ListGroup.Item>
+          <ListGroup.Item>
+            Order Total $
+            <b>
+              {new Intl.NumberFormat().format(totalOrder + totalOrder)}
+            </b>
+          </ListGroup.Item>
+        </ListGroup>
+        <Button>
+          <Link to="/confirmation">Pay</Link>
+        </Button>
       </div>
     </div>
   );

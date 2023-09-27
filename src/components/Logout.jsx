@@ -12,7 +12,7 @@ export default function Logout({setToken}) {
     };
 
     return (
-        <div>
+        <div className="confirm">
             <button onClick={() => logoutHandler()}>Logout</button>
         </div>
     );

@@ -1,5 +1,5 @@
 export default function Confirmation() {
     return(
-        <h1>Pay confirmed</h1>
+        <h1 className="confirm">Pay confirmed</h1>
     )
 }

@@ -156,7 +156,7 @@ export default function Login({token, setToken}) {
 
     return (
       <>
-      <div>
+      <div className="confirm">
         <h1>Login</h1>
         <hr />
         {error && <div>{error}</div>}

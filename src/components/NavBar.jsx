@@ -12,7 +12,7 @@ export default function NavBar() {
     }, []);
 
   return (
-    <nav>
+    <nav className="fixed-navbar">
       <ul>
         <li>
           <Link to="/">Home</Link>
