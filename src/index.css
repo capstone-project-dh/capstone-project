@@ -35,6 +35,146 @@ body {
 
 
 img {
-  width: 25%;
-  height: 25%;     
+  width: 50%;
+  height: 50%;     
+}
+
+.filters {
+  margin: 10px;
+}
+
+.product-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.product-item {
+  width: calc(33.33% - 10px);
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.product-item h3 {
+  font-size: 1.2rem;
+}
+
+.product-item img {
+  max-width: 100%;
+  height: auto;
+  margin: 10px 0;
+}
+
+.product-item button {
+  background-color: #5274ac;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.product-item button:hover {
+  background-color: #305759;
+}
+
+.fixed-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.fixed-navbar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px; 
+}
+
+.fixed-navbar li {
+  margin: 0 10px;
+}
+
+.fixed-navbar a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.confirm {
+  vertical-align: middle;
+  margin-top:5%;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.single-product {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+}
+
+.single-product .image {
+  flex: 1;
+}
+
+.single-product .image img {
+  width: 100%;
+  max-width: 300px; /* Adjust the image width as needed */
+  height: auto;
+}
+
+.single-product .details {
+  flex: 2;
+  padding-left: 20px; /* Add spacing between image and details */
+}
+
+.single-product h1 {
+  font-size: 1.5rem;
+}
+
+.single-product .info {
+  margin-top: 10px;
+}
+
+.single-product .descriptor {
+  margin-bottom: 10px;
+}
+
+.single-product .descriptor h6 {
+  font-weight: bold;
+}
+
+.single-product a {
+  text-decoration: none;
+  color: #5274ac;
+  font-weight: bold;
+}
+
+.single-product button {
+  background-color: #5274ac;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.single-product button:hover {
+  background-color: #305759;
 }

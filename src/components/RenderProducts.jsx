@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { fetchProducts } from "../api";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import "../index.css";
 
-export default function RenderProducts({addToCart}) {
+export default function RenderProducts({ addToCart }) {
   const [products, setProducts] = useState([]);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [filter, setFilter] = useState({
     title: "",
     image: "",
@@ -13,8 +14,10 @@ export default function RenderProducts({addToCart}) {
     price: "",
   });
 
+  const [sortBy, setSortBy] = useState(""); 
+
   useEffect(() => {
-    async function products() {
+    async function fetchProductData() {
       try {
         const data = await fetchProducts();
         setProducts(data);
@@ -22,15 +25,16 @@ export default function RenderProducts({addToCart}) {
         console.error(error);
       }
     }
-    products();
+    fetchProductData();
   }, []);
- 
-  const handleClick=(id) => {
-    navigate(`/products/${id}`)
-  }
+
+  const handleClick = (id) => {
+    navigate(`/products/${id}`);
+  };
 
   const filterProducts = () => {
-    return products.filter((product) => {
+    
+    let filteredProducts = products.filter((product) => {
       const { title, image, description, category, price } = product;
       return (
         title.toLowerCase().includes(filter.title.toLowerCase()) &&
@@ -40,6 +44,15 @@ export default function RenderProducts({addToCart}) {
         (filter.price === "" || price <= parseFloat(filter.price))
       );
     });
+
+    
+    if (sortBy === "lowToHigh") {
+      filteredProducts.sort((a, b) => a.price - b.price);
+    } else if (sortBy === "highToLow") {
+      filteredProducts.sort((a, b) => b.price - a.price);
+    }
+
+    return filteredProducts;
   };
 
   const handleFilterChange = (e) => {
@@ -49,14 +62,24 @@ export default function RenderProducts({addToCart}) {
       [name]: value,
     }));
   };
-  
+
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value);
+  };
+
+
   return (
-    <div>
+    <div className="confirm">
       <h1>Storefront</h1>
 
-      <div>
+      <div className="filters">
+      <select name="sortBy" onChange={handleSortChange}>
+          <option value="">Sort By</option>
+          <option value="lowToHigh">Price: Low to High</option>
+          <option value="highToLow">Price: High to Low</option>
+        </select>
         <input
-          title="text"
+          type="text"
           name="title"
           placeholder="Title"
           value={filter.title}
@@ -70,13 +93,13 @@ export default function RenderProducts({addToCart}) {
           onChange={handleFilterChange}
         />
         <input
-          title="description"
+          type="text"
           name="description"
           placeholder="Description"
           value={filter.description}
           onChange={handleFilterChange}
         />
-        <input
+        <input className="bold"
           type="number"
           name="price"
           placeholder="Price"
@@ -84,21 +107,18 @@ export default function RenderProducts({addToCart}) {
           onChange={handleFilterChange}
         />
       </div>
-      <div>
+      <div className="product-container">
         {filterProducts().map((product) => (
-          <div key={product.id}>
+          <div key={product.id} className="product-item">
             <h3>{product.title}</h3>
             <img src={product.image} alt={product.title} />
             <p>Description: {product.description}</p>
             <p>Price: ${product.price}</p>
-            <button onClick={() =>handleClick(product.id)}>See Details</button>
+            <button onClick={() => handleClick(product.id)}>See Details</button>
             <button onClick={() => addToCart(product)}>Add to Cart</button>
           </div>
         ))}
       </div>
     </div>
-    
-  )
+  );
 }
-
-
